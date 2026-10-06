@@ -1,0 +1,79 @@
+data:
+  mode: RS
+  colored: true 
+  tilted: false
+  transform:
+    img: 
+      source: [solution]
+      img_size: [3, 180, 180]
+    slot: 
+      source: [solution]
+      img_size: [3, 180, 180]
+
+model:
+  unet:
+    input_size: [3, 180, 180]
+    output_dim: 5
+    use_coords: true
+    hidden_dims: [64,  128, 256, 512]
+    self_attn: [false, false, true, true]
+    shared_attn: [false, false, true, true, true]
+    num_blocks: [2, 2, 1, 1]
+    attention:
+      num_head_channels: 64
+    bottleneck: true 
+    out:
+      norm: group
+      activation: silu
+    residual:
+      norm: group
+      activation: silu 
+    down:
+      with_conv: true 
+    up:
+      with_conv: true
+      mode: nearest
+  time:
+    embed_dim: 128
+    output_dim: 256
+  slot:
+    # copy and paste the [.slot] configuration from (config/coldoku/slot-16 or config/coldoku/slot-81)
+    path: # subfolder inside $RESULTS_FOLDER to the SAE weights (e.g. coldoku-16.pt or coldoku-81.pt)
+  rel:
+    num_layers: 6
+    hidden_dim: 128
+    pdrop:
+      training: 0.5
+      inference: 1
+
+dm:
+  name: flow
+  sampler:
+    name: beta
+    alpha: 1
+    beta: 1
+  uncertainty:
+    weight: 0.01 
+    start_on: 0
+    patch_size: 20
+
+optimizer:
+  name: adamw
+  lr: 0.0001
+  batch_size: 128
+  max_norm: 1.0
+  ema: 0.999
+  scheduler:
+    name: linear
+    start_factor: 1e-8
+    total_iters: 5e3
+
+train:
+  batch_size: 64
+  max_steps: 3e5
+
+eval: 
+  batch_size: 128
+
+predict:
+  batch_size: 128

@@ -1,0 +1,77 @@
+data: 
+  mode: RS
+  transform:
+    img: 
+      source: [solution]
+      img_size: [3, 198, 198]
+    slot: 
+      source: [solution, clue]
+      img_size: [none, 198, 198]
+
+model:
+  unet: 
+    input_size: [3, 198, 198]
+    output_dim: 5
+    hidden_dims: [64, 128, 256, 512]
+    self_attn: [false, false, true, true]
+    shared_attn: [false, false, true, true, true]
+    num_blocks: [2, 2, 1, 1]
+    use_coords: true
+    attention:
+      num_head_channels: 64
+    bottleneck: true 
+    out:
+      norm: group
+      activation: silu
+    residual:
+      norm: group
+      activation: silu 
+    down:
+      with_conv: true 
+    up:
+      with_conv: true
+      mode: nearest
+  time:
+    embed_dim: 128
+    output_dim: 256
+  slot:
+    # copy and paste the [.slot] configuration from (config/akari/slot-16 or config/akari/slot-121)
+    path: # subfolder inside $RESULTS_FOLDER to the SAE weights (e.g. akari-16.pt or akari-121.pt)
+  rel:
+    hidden_dim: 128
+    num_layers: 6
+    pdrop:
+      training: [0.5, 0]
+      inference: [1, 0]
+    
+dm:
+  name: flow
+  sampler:
+    name: beta
+    alpha: 1
+    beta: 1
+  uncertainty:
+    weight: 0.01 
+    start_on: 0
+    patch_size: 18
+
+optimizer:
+  name: adamw
+  lr: 0.0001
+  batch_size: 128
+  max_norm: 1.0
+  ema: 0.999
+  scheduler:
+    name: linear
+    start_factor: 1e-8
+    total_iters: 5e3
+
+train:
+  batch_size: 64
+  max_steps: 2e5
+
+eval: 
+  batch_size: 128
+
+predict:
+  batch_size: 128

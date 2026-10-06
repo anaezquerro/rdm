@@ -1,0 +1,13 @@
+torch
+torchvision
+matplotlib
+tqdm
+ruamel.yaml
+opencv-python
+transformers
+einops
+jaxtyping
+timm
+shapely
+cairosvg
+pandas
