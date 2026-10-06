@@ -24,11 +24,11 @@ EVAL_FOLDER = 'eval'
 
 Follow these steps to reproduce and use our code:
 
-1. Download the trained evaluators from [eval.zip]() and move all its content to the selected `$EVAL_FOLDER`.
-2. The repository already has lightweight files in [datasets/](datasets) from which more samples or different train/test splits can be obtained. Large files (with exact train/test splits) are available in [datasets.zip](). Unzip the file and move all its content to the selected `$DATA_FOLDER`.
+1. Download the trained evaluators from [eval.zip](https://drive.google.com/file/d/1JqDkG6JEhadCJUd6WtDE2hu_NYHNeGnF/view?usp=sharing) and move all its content to the selected `$EVAL_FOLDER`.
+2. The repository already has lightweight files in [datasets/](datasets) from which more samples or different train/test splits can be obtained. Large files (with exact train/test splits) are available in [datasets.zip](https://drive.google.com/file/d/17mNODwYlJfHsf1-UZ2ummfBU2qljphec/view?usp=drive_link). Unzip the file and move all its content to the selected `$DATA_FOLDER`.
     - For Coldoku, we use [SRM](https://github.com/Chrixtar/SRM) original MNIST Sudoku dataset. Download the *mnist_sudoku.npy* and save it in `$DATA_FOLDER`.
     - For Counting Polygons, we also use the *circle_position_radius.npy* file. Download it and save it in `$DATA_FOLDER`.
-3. We provide the pretrained slot autoencoders from our paper, so only diffusion models need to be trained again. Download the file [results.zip]() and move all its content to the selected `$RESULTS_FOLDER`. 
+3. We provide the pretrained slot autoencoders from our paper, so only diffusion models need to be trained again. Download the file [results.zip](https://drive.google.com/file/d/1XSPog7EWc_ZnaOE_nicGzf8yfdBiyZRe/view?usp=sharing) and move all its content to the selected `$RESULTS_FOLDER`. 
 
 
 ## Training 
@@ -53,7 +53,6 @@ python3 train.py base -d akari -p results/akari/baseline  --load
 - [solution.yaml](): Configuration file to train RDM with the *solution* approach (CFG).
 - [full.yaml](): Configuration file to train RDM with the *full* approach.
 
-To train RDM approaches it is required to first train the slot-autoencoder, and specify in the configuration file the same slot auto-encoder configuration and the path of the checkpoint. 
 
 **Compatibility with DDP**: This code supports [Data Distributed Parallel (DDP)](https://docs.pytorch.org/tutorials/intermediate/ddp_tutorial.html) training by simply running the [train.py](train.py) script with the desired [torchrun](https://docs.pytorch.org/docs/stable/elastic/run.html) specifications. For example:
 
@@ -75,7 +74,9 @@ python3 eval.py abs -d akari -p results/akari/baseline/last.pt -s test --num-ste
 ```
 
 
+## Data Generation
 
+We have the original scripts to automatically generate Akari, Tangram and LogicFace samples. Do not hesitate to [contact us](mailto:ana.ezquerro@tugraz.at) if you are interested in augmenting our benchmark with more samples or different configurations (e.g. varying Akari layouts, increasing Tangram colors). 
 
 
 
